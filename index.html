@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>s.abariiii</title>
+<style>
+  /* ---------- Root & Fonts ---------- */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+  :root{
+    --bg-overlay: rgba(2,6,23,0.64);
+    --accent: #ff2c8f;
+    --accent-2: #00ffc3;
+    --muted: #cbd5e1;
+    --card: rgba(255,255,255,0.05);
+  }
+
+  /* Light theme vars (overridden when data-theme="light") */
+  [data-theme="light"] {
+    --bg-overlay: rgba(0,0,0,0.18);
+    --accent: #7c4dff;
+    --accent-2: #ff6b6b;
+    --muted: #222;
+    --card: rgba(255,255,255,0.85);
+  }
+
+  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  body{
+    --bg-img: url("https://fluttering-violet-4qmycyq3zi.edgeone.app/I%20have%20no%20enemies%20_%20Vinland%20Saga%20iphone%204k%20wallpaper%20lock%20screen%20theme%20idea.jpeg");
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-image: var(--bg-img);
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:var(--muted);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* overlay to darken background for readability */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 60%), var(--bg-overlay);
+    z-index:0;
+    pointer-events:none;
+  }
+
+  /* Page card */
+  .page {
+    z-index:1;
+    width:100%;
+    max-width:920px;
+    margin:36px;
+    border-radius:16px;
+    padding:28px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.18));
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6), 0 3px 10px rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px) saturate(120%);
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:24px;
+    align-items:start;
+  }
+
+  /* Responsive column stack */
+  @media (max-width:880px){
+    .page{grid-template-columns:1fr; padding:20px}
+    .right {order:2}
+  }
+
+  /* Left — intro & links */
+  .left h1{
+    margin:0 0 8px 0;
+    font-size:2.6rem;
+    color:var(--accent);
+    text-shadow: 0 0 18px rgba(255,44,143,0.14), 0 0 36px rgba(255,44,143,0.06);
+    letter-spacing:0.6px;
+    animation:pop 900ms cubic-bezier(.2,.9,.2,1);
+  }
+  @keyframes pop{0%{transform:translateY(10px);opacity:0}100%{transform:none;opacity:1}}
+
+  .left p.lead{margin:6px 0 18px 0;color:var(--muted);max-width:60ch;line-height:1.5}
+
+  .links{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+  .btn{
+    display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;
+    text-decoration:none;color:#fff;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.06);transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    font-weight:600;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  }
+  .btn .ico {width:40px;height:40px;border-radius:10px;display:inline-grid;place-items:center;font-weight:700}
+  .btn:hover{transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.55)}
+  .btn--spotify .ico{background:linear-gradient(135deg,#1db954,#1ed760)}
+  .btn--pinterest .ico{background:linear-gradient(135deg,#bd081c,#ff6f6f)}
+  .btn--github .ico{background:linear-gradient(135deg,#6e5494,#3f3f46)}
+
+  /* right column — player + extras */
+  .right {padding:10px 8px}
+  .card {
+    background: var(--card);
+    border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.04);
+  }
+  .player {display:flex;flex-direction:column;gap:8px;align-items:stretch}
+  .player iframe{width:100%;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+
+  /* small controls */
+  .controls{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px}
+  .control-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:var(--muted);cursor:pointer}
+  .control-btn:hover{transform:translateY(-4px); color:#fff}
+
+  /* floating shapes (hearts) */
+  .float-wrap{position:fixed;pointer-events:none;inset:0;z-index:0;overflow:hidden}
+  .float {
+    position:absolute; font-size:18px; color:var(--accent); opacity:.7;
+    animation:floatUp linear infinite;
+  }
+  @keyframes floatUp {0%{transform:translateY(0) scale(1);opacity:0.9}100%{transform:translateY(-700px) scale(0.4);opacity:0}}
+
+  /* theme toggle */
+  .topbar{display:flex;justify-content:flex-end;gap:10px;align-items:center}
+  .toggle{background:rgba(255,255,255,0.04);border-radius:999px;padding:6px 10px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;color:var(--muted)}
+  .small{font-size:13px;color:var(--muted)}
+
+  /* subtle entrance animations on .card children */
+  .fade-in {opacity:0; transform:translateY(8px); animation:fade .8s forwards; animation-delay:.12s}
+  .fade-in.delay {animation-delay:.28s}
+  @keyframes fade{to{opacity:1;transform:none}}
+</style>
+</head>
+<body data-theme="dark">
+  <div class="page" role="main" aria-labelledby="title">
+    <div class="left">
+      <div class="topbar small" style="justify-content:flex-end">
+        <div class="small">Theme</div>
+        <button id="themeToggle" class="toggle" aria-pressed="false" title="Toggle light / dark">Dark</button>
+      </div>
+
+      <h1 id="title">s.abariiii</h1>
+      <p class="lead fade-in">Welcome — music, edits & vibes. Tap a link, play a track, and float with the neon.</p>
+
+      <div class="links fade-in delay" role="navigation" aria-label="social links">
+        <a class="btn btn--spotify" href="https://open.spotify.com/user/31qxyaatejppwxvq35ocu4lhdnqu?si=juA6x8y6TS-n0ONj6mjwWg" target="_blank" rel="noopener">
+          <span class="ico">S</span><span>Spotify</span>
+        </a>
+        <a class="btn btn--pinterest" href="https://pin.it/3pkEno0XM" target="_blank" rel="noopener">
+          <span class="ico">P</span><span>P interest</span>
+        </a>
+        <a class="btn btn--github" href="https://github.com/sabariiii" target="_blank" rel="noopener">
+          <span class="ico">G</span><span>GitHub</span>
+        </a>
+      </div>
+    </div>
+
+    <aside class="right">
+      <div class="card fade-in">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:14px;color:var(--muted)">Now playing</div>
+            <strong style="color:#fff">Your favorite track</strong>
+          </div>
+          <div class="small">s.abariiii</div>
+        </div>
+
+        <div class="player" style="margin-top:12px">
+          <!-- Spotify embed (your chosen track) -->
+          <iframe title="Spotify player"
+            src="https://open.spotify.com/embed/track/0RJ7HhnQxJEOpGC5Htmez4?utm_source=generator&theme=0"
+            width="100%" height="152" frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+
+          <div class="controls">
+            <div>
+              <button id="btnGlow" class="control-btn" title="Pulse effect">Pulse</button>
+              <button id="btnName" class="control-btn" title="Animate name">Animate</button>
+            </div>
+            <div>
+              <button id="copyBtn" class="control-btn" title="Copy profile link">Copy link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in delay" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><strong>Quick preview</strong><div class="small" style="margin-top:6px;color:var(--muted)">Open your edits or bio</div></div>
+          <div class="small">Share</div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button id="shareBtn" class="control-btn">Share</button>
+          <button id="openPhotos" class="control-btn">Photos</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- floating hearts container -->
+  <div class="float-wrap" aria-hidden="true"></div>
+
+<script>
+  /***** THEME TOGGLE (persist) *****/
+  const body = document.body;
+  const themeToggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('sabar-theme');
+  if(saved) {
+    body.setAttribute('data-theme', saved);
+    themeToggle.textContent = saved === 'light' ? 'Light' : 'Dark';
+    themeToggle.setAttribute('aria-pressed', saved === 'light');
+  } else {
+    body.setAttribute('data-theme','dark');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const now = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    body.setAttribute('data-theme', now);
+    localStorage.setItem('sabar-theme', now);
+    themeToggle.textContent = now === 'light' ? 'Light' : 'Dark';
+    themeToggle.setAttribute('aria-pressed', now === 'light');
+  });
+
+  /***** FLOATING HEARTS (max style + action) *****/
+  const floatWrap = document.querySelector('.float-wrap');
+  function spawnFloat(){
+    const el = document.createElement('div');
+    el.className = 'float';
+    el.textContent = '♥';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (12 + Math.random()*22) + 'px';
+    el.style.opacity = (0.5 + Math.random()*0.6).toFixed(2);
+    el.style.animationDuration = (5 + Math.random()*6) + 's';
+    floatWrap.appendChild(el);
+    setTimeout(()=> el.remove(), 11000);
+  }
+  // start gentle flow
+  setInterval(spawnFloat, 550);
+
+  /***** BUTTON ACTIONS *****/
+  document.getElementById('copyBtn').addEventListener('click', async ()=>{
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Profile link copied! Paste in your Instagram bio.');
+    } catch(e){
+      prompt('Copy this link:', window.location.href);
+    }
+  });
+
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    if(navigator.share){
+      navigator.share({title:'s.abariiii', url:window.location.href}).catch(()=>{});
+    } else {
+      prompt('Share this link', window.location.href);
+    }
+  });
+
+  document.getElementById('openPhotos').addEventListener('click', ()=>{
+    // if you later add a photos.html page, it will open here.
+    // for now: open GitHub repo or show instruction
+    window.open('https://github.com/sabariiii', '_blank');
+  });
+
+  // small pulse effect - toggles a temporary glow on page
+  document.getElementById('btnGlow').addEventListener('click', ()=>{
+    const el = document.querySelector('h1');
+    el.animate([
+      { filter: 'drop-shadow(0 0 0 rgba(255,44,143,0))' },
+      { filter: 'drop-shadow(0 0 30px rgba(255,44,143,0.8))' },
+      { filter: 'drop-shadow(0 0 0 rgba(255,44,143,0))' }
+    ], { duration: 900 });
+  });
+
+  // animate name
+  document.getElementById('btnName').addEventListener('click', ()=>{
+    const h = document.querySelector('h1');
+    h.animate([
+      { transform: 'translateY(0) rotate(0deg)' },
+      { transform: 'translateY(-10px) rotate(-2deg)' },
+      { transform: 'translateY(0) rotate(2deg)' },
+      { transform: 'translateY(0) rotate(0deg)' }
+    ], { duration: 900, easing:'ease-out' });
+  });
+
+  // small accessibility: stop animations if user prefers reduced motion
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(mq.matches) {
+    document.querySelectorAll('.float, .float-wrap').forEach(n => n.style.animation = 'none');
+    document.querySelectorAll('.fade-in').forEach(n => n.style.animation = 'none');
+  }
+</script>
+</body>
+</html>
